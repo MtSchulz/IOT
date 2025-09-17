@@ -1,0 +1,1 @@
+[{"id":"cdb06e4049fa0508","type":"template","z":"2e30623f3488b225","name":"SelectProduto","field":"topic","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"SELECT * FROM Produto;","output":"str","x":480,"y":280,"wires":[["e0d7da32ea944002"]]}]

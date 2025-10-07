@@ -1,0 +1,150 @@
+[
+    {
+        "id": "132c3af0ff813272",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0c17875fb745398d",
+        "type": "mqtt-broker",
+        "name": "MqttSub",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "dd6d0164159e56fb",
+        "type": "aedes broker",
+        "z": "132c3af0ff813272",
+        "name": "LocalBroker",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "318e508f32c34428",
+        "type": "mqtt in",
+        "z": "132c3af0ff813272",
+        "name": "",
+        "topic": "/smart4.0/temp",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0c17875fb745398d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 420,
+        "wires": [
+            [
+                "1b0860d326d17c7f"
+            ]
+        ]
+    },
+    {
+        "id": "1b0860d326d17c7f",
+        "type": "debug",
+        "z": "132c3af0ff813272",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4e30053d3f75f0aa",
+        "type": "mqtt out",
+        "z": "132c3af0ff813272",
+        "name": "",
+        "topic": "",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0c17875fb745398d",
+        "x": 450,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "e9cee5542780b28c",
+        "type": "inject",
+        "z": "132c3af0ff813272",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "/smart4.0/temp",
+        "payload": "55.88",
+        "payloadType": "str",
+        "x": 140,
+        "y": 520,
+        "wires": [
+            [
+                "4e30053d3f75f0aa"
+            ]
+        ]
+    }
+]

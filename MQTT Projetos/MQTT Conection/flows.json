@@ -1,0 +1,354 @@
+[
+    {
+        "id": "132c3af0ff813272",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8399673a0d745c48",
+        "type": "tab",
+        "label": "Fluxo 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0c17875fb745398d",
+        "type": "mqtt-broker",
+        "name": "MqttSub",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "43dc3c4f1e4a7f5e",
+        "type": "mqtt-broker",
+        "name": "Local Broker",
+        "broker": "localhost",
+        "port": "1883",
+        "tls": "",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": ""
+    },
+    {
+        "id": "dd6d0164159e56fb",
+        "type": "aedes broker",
+        "z": "132c3af0ff813272",
+        "name": "LocalBroker",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 290,
+        "y": 400,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "318e508f32c34428",
+        "type": "mqtt in",
+        "z": "132c3af0ff813272",
+        "name": "",
+        "topic": "/esp32/comandos",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0c17875fb745398d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 480,
+        "wires": [
+            [
+                "1b0860d326d17c7f"
+            ]
+        ]
+    },
+    {
+        "id": "1b0860d326d17c7f",
+        "type": "debug",
+        "z": "132c3af0ff813272",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "4e30053d3f75f0aa",
+        "type": "mqtt out",
+        "z": "132c3af0ff813272",
+        "name": "",
+        "topic": "",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0c17875fb745398d",
+        "x": 630,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "e9cee5542780b28c",
+        "type": "inject",
+        "z": "132c3af0ff813272",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "/smart4.0/temp",
+        "payload": "55.88",
+        "payloadType": "str",
+        "x": 320,
+        "y": 580,
+        "wires": [
+            [
+                "4e30053d3f75f0aa"
+            ]
+        ]
+    },
+    {
+        "id": "4c08bb30f2d375ff",
+        "type": "aedes broker",
+        "z": "8399673a0d745c48",
+        "name": "LocalBroker",
+        "mqtt_port": "1885",
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "persistence_bind": "memory",
+        "dburl": "",
+        "usetls": false,
+        "x": 330,
+        "y": 340,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "f4f50a3e52e979b9",
+        "type": "mqtt in",
+        "z": "8399673a0d745c48",
+        "name": "Receber do ESP32",
+        "topic": "esp32/sensores",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "0c17875fb745398d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "c9a83dd3d8021cbe"
+            ]
+        ]
+    },
+    {
+        "id": "c9a83dd3d8021cbe",
+        "type": "json",
+        "z": "8399673a0d745c48",
+        "name": "Converter para JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 570,
+        "y": 200,
+        "wires": [
+            [
+                "3d7b0c4a1b05d3d8"
+            ]
+        ]
+    },
+    {
+        "id": "3d7b0c4a1b05d3d8",
+        "type": "debug",
+        "z": "8399673a0d745c48",
+        "name": "Visualizar Sensores",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "b1f63ed37e7f2f86",
+        "type": "inject",
+        "z": "8399673a0d745c48",
+        "name": "LED ON",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"led\":\"ON\"}",
+        "payloadType": "json",
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "1e7e0b9e74e2e1d0"
+            ]
+        ]
+    },
+    {
+        "id": "7adf9b7ef2c4cb60",
+        "type": "inject",
+        "z": "8399673a0d745c48",
+        "name": "LED OFF",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"led\":\"OFF\"}",
+        "payloadType": "json",
+        "x": 320,
+        "y": 500,
+        "wires": [
+            [
+                "1e7e0b9e74e2e1d0"
+            ]
+        ]
+    },
+    {
+        "id": "b7df40df22e6aa0b",
+        "type": "inject",
+        "z": "8399673a0d745c48",
+        "name": "Mensagem no LCD",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"mensagem\":\"Teteu fodastico\"}",
+        "payloadType": "json",
+        "x": 350,
+        "y": 540,
+        "wires": [
+            [
+                "1e7e0b9e74e2e1d0"
+            ]
+        ]
+    },
+    {
+        "id": "1e7e0b9e74e2e1d0",
+        "type": "mqtt out",
+        "z": "8399673a0d745c48",
+        "name": "Enviar para ESP32",
+        "topic": "esp32/comandos",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0c17875fb745398d",
+        "x": 610,
+        "y": 500,
+        "wires": []
+    }
+]

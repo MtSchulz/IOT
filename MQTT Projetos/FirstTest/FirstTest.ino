@@ -2,7 +2,7 @@
 #include <PubSubClient.h>
 
 const char* ssid = "Smart 4.0 (3)";
-const char* password = "Smart 4.0";
+const char* password = "Smart4.0";
 
 const char* mqtt_server = "10.74.241.95"; // IP da Máquina
 
@@ -67,7 +67,6 @@ void setup(){
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 }
-
 
 void loop() {
   if( !client.connected() ){

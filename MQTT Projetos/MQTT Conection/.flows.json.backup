@@ -35,7 +35,7 @@
         "id": "0c17875fb745398d",
         "type": "mqtt-broker",
         "name": "MqttSub",
-        "broker": "10.74.241.95",
+        "broker": "localhost",
         "port": "1883",
         "clientid": "",
         "autoConnect": true,

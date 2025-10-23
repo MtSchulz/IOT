@@ -19,9 +19,9 @@
 #define LCD_D6 21
 #define LCD_D7 18
 
-#define LED_WIFI  26
-#define LED_MQTT  25
-#define LED_ERRO  14
+#define LED_R 26
+#define LED_G 25
+#define LED_B 14
 
 DHT dht(DHTPIN, DHTTYPE);
 LiquidCrystal lcd(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
@@ -54,18 +54,27 @@ void showLCD(const char* line1, const char* line2) {
   lcd.print(line2);
 }
 
-void setLedStatus(bool wifi, bool mqtt) {
-  digitalWrite(LED_WIFI, wifi ? HIGH : LOW);
-  digitalWrite(LED_MQTT, mqtt ? HIGH : LOW);
-  digitalWrite(LED_ERRO, (!wifi && !mqtt) ? HIGH : LOW);
+void setLedRGB(bool wifi, bool mqtt) {
+  if (!wifi) { // Verde
+    digitalWrite(LED_R, LOW);
+    digitalWrite(LED_G, LOW);
+    digitalWrite(LED_B, HIGH);
+  } else if (wifi && !mqtt) { // Azul
+    digitalWrite(LED_R, LOW);
+    digitalWrite(LED_G, HIGH);
+    digitalWrite(LED_B, LOW);
+  } else if (wifi && mqtt) { // Vermelho
+    digitalWrite(LED_R, HIGH);
+    digitalWrite(LED_G, LOW);
+    digitalWrite(LED_B, LOW);
+  }
 }
-
 // =================== Callback MQTT ===================
 
 void callback(char* topic, byte* payload, unsigned int length) {
   String msg;
   for (unsigned int i = 0; i < length; i++) msg += (char)payload[i];
-  Serial.println("📥 [MQTT] " + msg);
+  Serial.println("[MQTT] " + msg);
 }
 
 // =================== Servidor HTTP ===================
@@ -79,11 +88,11 @@ void handleRoot() {
   json += "\"temperatura\":" + String(temp) + ",";
   json += "\"umidade\":" + String(hum) + ",";
   json += "\"distancia\":" + String(dist) + ",";
-  json += "\"led\":\"" + String(ledStatus ? "ON" : "OFF") + "\"";
+  json += "\"led\":\"" + String(setLedRGB ? "ON" : "OFF") + "\"";
   json += "}";
 
   server.send(200, "application/json", json);
-  Serial.println("📤 [HTTP] Dados enviados -> " + json);
+  Serial.println("[HTTP] Dados enviados -> " + json);
 }
 
 void handleLed() {
@@ -104,35 +113,35 @@ void handleLed() {
 
 void setup_wifi() {
   WiFi.mode(WIFI_AP_STA);  // STA + AP
-  pinMode(LED_WIFI, OUTPUT);
-  pinMode(LED_MQTT, OUTPUT);
-  pinMode(LED_ERRO, OUTPUT);
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  pinMode(LED_B, OUTPUT);
 
-  Serial.println("\n🌐 Iniciando Wi-Fi com WiFiManager...");
+  Serial.println("\nIniciando Wi-Fi com WiFiManager...");
   showLCD("Wi-Fi:", "Conectando...");
-  setLedStatus(false, false);
+  setLedRGB(false, false);
 
   WiFiManager wm;
   bool res = wm.autoConnect("ESP32_W1lSchulz", "12345678");
 
   if (!res) {
-    Serial.println("❌ Falha ao conectar Wi-Fi! Reiniciando...");
+    Serial.println("Falha ao conectar Wi-Fi! Reiniciando...");
     showLCD("Wi-Fi:", "Falha!");
-    setLedStatus(false, false);
+    setLedRGB(false, false);
     delay(3000);
     ESP.restart();
   } else {
-    Serial.println("✅ Wi-Fi conectado!");
-    Serial.print("📶 IP (STA): ");
+    Serial.println("Wi-Fi conectado!");
+    Serial.print("IP (STA): ");
     Serial.println(WiFi.localIP());
     showLCD("Wi-Fi: OK", "MQTT: Aguardando...");
-    setLedStatus(true, false);
+    setLedRGB(true, false);
   }
 
   // ---------- Criação do Access Point ----------
   WiFi.softAP("ESP32_W1lSchulz", "12345678");
   IPAddress IP = WiFi.softAPIP();
-  Serial.print("📡 AP ativo em: ");
+  Serial.print("AP ativo em: ");
   Serial.println(IP);
   showLCD("AP: ESP32_W1lSchulz", ("IP: " + WiFi.softAPIP().toString()).c_str());
 }
@@ -141,16 +150,16 @@ void setup_wifi() {
 
 void reconnect() {
   while (!client.connected()) {
-    Serial.println("🔌 Tentando MQTT...");
+    Serial.println("Tentando MQTT...");
     if (client.connect("ESP32_CLIENT")) {
-      Serial.println("✅ Conectado ao broker!");
-      client.subscribe("esp32/comandos");
+      Serial.println("Conectado ao broker!");
+      client.subscribe("/smart4.0");
       showLCD("Wi-Fi: OK", "MQTT: Conectado");
-      setLedStatus(true, true);
+      setLedRGB(true, true);
     } else {
-      Serial.println("❌ Falha MQTT, tentando novamente...");
+      Serial.println("Falha MQTT, tentando novamente...");
       showLCD("Wi-Fi: OK", "MQTT: Falhou!");
-      setLedStatus(true, false);
+      setLedRGB(true, false);
       delay(5000);
     }
   }
@@ -173,7 +182,7 @@ void setup() {
   server.on("/", handleRoot);
   server.on("/led", handleLed);
   server.begin();
-  Serial.println("🌍 Servidor HTTP iniciado na porta 80");
+  Serial.println("Servidor HTTP iniciado na porta 80");
 
   // Configurar MQTT
   client.setServer("10.74.241.95", 1883);
@@ -185,7 +194,7 @@ void setup() {
 void loop() {
   if (WiFi.status() != WL_CONNECTED) {
     showLCD("Wi-Fi:", "Desconectado!");
-    setLedStatus(false, false);
+    setLedRGB(false, false);
     setup_wifi();
   }
 
